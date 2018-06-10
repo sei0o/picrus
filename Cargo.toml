@@ -1,0 +1,6 @@
+[package]
+name = "picrus"
+version = "0.1.0"
+authors = ["sei0o <sei0o@live.jp>"]
+
+[dependencies]
