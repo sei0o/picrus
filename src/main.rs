@@ -1,11 +1,6 @@
-struct Emulator {
-  
-}
-
-impl Emulator {
-
-}
+mod ihexparse;
+mod emulator;
 
 fn main() {
-  println!("Hello, world!");
+  let emu = create_emulator();
 }
