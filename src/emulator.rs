@@ -1,9 +1,11 @@
+use instruction;
+
 pub struct Emulator {
-  program_mem: Vec<u16>,
-  data_mem: Vec<u8>,
-  file_reg: Vec<u8>,
-  w_reg: u8,
-  pc: u16,
+  pub program_mem: Vec<u16>,
+  pub data_mem: Vec<u8>,
+  pub file_reg: Vec<u8>,
+  pub w_reg: u8,
+  pub pc: u16,
 }
 
 impl Emulator {
@@ -33,9 +35,13 @@ impl Emulator {
 
   }
 
-  pub fn do_next_instruction(&self) { 
+  pub fn do_next_instruction(&mut self) { 
     match self.program_mem[self.pc as usize] {
-      _ => println!("Not Implemented"),
+      op if (op >> 11) == 0b101 => instruction::goto(self),
+      _ => {
+        println!("Not Implemented");
+        self.pc += 1;
+      },
     }
   }
 }

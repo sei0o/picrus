@@ -8,9 +8,8 @@ fn main() {
   let filename = &env::args().last().expect("Filename isn't specified");
   let insts = ihexparse::parse_file(filename);
   println!("File parsed: {:?}", insts);
-  return;
 
-  // let emu = emulator::Emulator::new();
-  // emu.load(insts);
-  // emu.execute();
+  let mut emu = emulator::Emulator::new();
+  emu.load(insts.as_slice());
+  emu.execute();
 }
