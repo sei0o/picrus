@@ -1,5 +1,4 @@
-fn do_instruction(emu: Emulator, inst: u16) {
-    match inst {
+use emulator::Emulator;
 
-    }
+pub fn nop(emu: &mut Emulator) {
 }
