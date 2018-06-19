@@ -40,6 +40,7 @@ impl Emulator {
       // Byte-oriented file register operations
       
       // Bit-oriented file register operations
+      op if (op >> 10) == 0b0100 => instruction::bcf(self),
       op if (op >> 10) == 0b0101 => instruction::bsf(self),
       
       // Literal and control operations
