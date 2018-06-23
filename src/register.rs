@@ -28,3 +28,34 @@ pub mod bank1 {
   pub const PCLATH:     usize = 0x8a;
   pub const INTCON:     usize = 0x8b;
 }
+
+// Returns register address which has the same name in the other bank
+pub fn pair_for(reg: usize) -> Option<usize> {
+  match reg {
+    // bank 0 -> bank 1
+    0x00 => Some(0x80),
+    0x01 => None,
+    0x02 => Some(0x82),
+    0x03 => Some(0x83),
+    0x04 => Some(0x84),
+    0x05 => None,
+    0x06 => None,
+    0x08 => None,
+    0x09 => None,
+    0x0a => Some(0x8a),
+    0x0b => Some(0x8b),
+    // bank 1 -> bank 0
+    0x80 => Some(0x00),
+    0x81 => None,
+    0x82 => Some(0x02),
+    0x83 => Some(0x03),
+    0x84 => Some(0x04),
+    0x85 => None,
+    0x86 => None,
+    0x88 => None,
+    0x89 => None,
+    0x8a => Some(0x0a),
+    0x8b => Some(0x0b),
+    _ => panic!("Unknown register number")
+  }
+}

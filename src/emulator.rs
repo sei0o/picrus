@@ -1,4 +1,6 @@
 use instruction;
+use register;
+use register::{bank0, bank1};
 
 pub struct Emulator {
   pub program_mem: Vec<u16>,
@@ -51,5 +53,26 @@ impl Emulator {
         self.pc += 1;
       },
     }
+  }
+
+  pub fn get_sfr(&self, addr: usize) -> u8 {
+    self.file_reg[addr]
+  }
+
+  pub fn set_sfr(&mut self, addr: usize, val: u8) {
+    self.file_reg[addr] = val;
+    match register::pair_for(addr) {
+      Some(pair) => self.file_reg[pair] = val,
+      None => return
+    }
+  }
+
+  pub fn get_z_bit(&self) -> u8 {
+    (self.get_sfr(bank0::STATUS) >> 2) & 1
+  }
+
+  pub fn set_z_bit(&mut self, z: u8) {
+    let old_status = self.get_sfr(bank0::STATUS);
+    self.set_sfr(bank0::STATUS, old_status & !(1 << 2) | (z << 2));
   }
 }

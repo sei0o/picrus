@@ -1,6 +1,7 @@
 use std::env;
 
 mod ihexparse;
+mod register;
 mod emulator;
 mod instruction;
 
