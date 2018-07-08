@@ -41,6 +41,7 @@ impl Emulator {
     match self.program_mem[self.pc as usize] {
       // Byte-oriented file register operations
       op if (op >> 7) == 0b0000011 => instruction::clrf(self),
+      op if (op >> 7) == 0b0000001 => instruction::movwf(self),
 
       // Bit-oriented file register operations
       op if (op >> 10) == 0b0100 => instruction::bcf(self),
