@@ -34,7 +34,32 @@ impl Emulator {
   }
 
   pub fn dump_regs(&self) {
+    println!("PC: {}", self.pc);
+    println!("W register: {}", self.w_reg);
+    
+    println!("INDF: {}", self.file_reg[0x00 as usize]);
+    println!("TMR0: {}", self.file_reg[0x01 as usize]);
+    println!("PCL: {}", self.file_reg[0x02 as usize]);
+    println!("STATUS: {}", self.file_reg[0x03 as usize]);
+    println!("FSR: {}", self.file_reg[0x04 as usize]);
+    println!("PORTA: {}", self.file_reg[0x05 as usize]);
+    println!("PORTB: {}", self.file_reg[0x06 as usize]);
+    println!("EEDATA: {}", self.file_reg[0x08 as usize]);
+    println!("EEADR: {}", self.file_reg[0x09 as usize]);
+    println!("PCLATH: {}", self.file_reg[0x0a as usize]);
+    println!("INTCON: {}", self.file_reg[0x0b as usize]);
 
+    println!("INDF: {}", self.file_reg[0x80 as usize]);
+    println!("OPTION_REG: {}", self.file_reg[0x81 as usize]);
+    println!("PCL: {}", self.file_reg[0x82 as usize]);
+    println!("STATUS: {}", self.file_reg[0x83 as usize]);
+    println!("FSR: {}", self.file_reg[0x84 as usize]);
+    println!("TRISA: {}", self.file_reg[0x85 as usize]);
+    println!("TRISB: {}", self.file_reg[0x86 as usize]);
+    println!("EECON1: {}", self.file_reg[0x88 as usize]);
+    println!("EECON2: {}", self.file_reg[0x89 as usize]);
+    println!("PCLATH: {}", self.file_reg[0x8a as usize]);
+    println!("INTCON: {}", self.file_reg[0x8b as usize]);
   }
 
   pub fn do_next_instruction(&mut self) { 

@@ -59,3 +59,32 @@ pub fn pair_for(reg: usize) -> Option<usize> {
     _ => panic!("Unknown register number")
   }
 }
+
+pub fn name_for(reg: usize) -> String {
+  match reg {
+    0x00 => "INDF",
+    0x01 => "TMR0",
+    0x02 => "PCL",
+    0x03 => "STATUS",
+    0x04 => "FSR",
+    0x05 => "PORTA",
+    0x06 => "PORTB",
+    0x08 => "EEDATA",
+    0x09 => "EEADR",
+    0x0a => "PCLATH",
+    0x0b => "INTCON",
+
+    0x80 => "INDF",
+    0x81 => "OPTION_REG",
+    0x82 => "PCL",
+    0x83 => "STATUS",
+    0x84 => "FSR",
+    0x85 => "TRISA",
+    0x86 => "TRISB",
+    0x88 => "EECON1",
+    0x89 => "EECON2",
+    0x8a => "PCLATH",
+    0x8b => "INTCON",
+    _ => panic!("Unknown register number")
+  }.to_string()
+}
