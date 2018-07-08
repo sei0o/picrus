@@ -48,3 +48,10 @@ pub fn goto(emu: &mut Emulator) {
   let pclath_addr = 0;
   emu.pc = (pclath_addr << 11) | (instr & 0x7ff);
 }
+
+pub fn movlw(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let k: u8 = (instr & 0xff) as u8;
+  emu.w_reg = k;
+  emu.pc += 1;
+}

@@ -48,6 +48,7 @@ impl Emulator {
       
       // Literal and control operations
       op if (op >> 11) == 0b101 => instruction::goto(self),
+      op if (op >> 10) == 0b1100 => instruction::movlw(self),
       
       _ => {
         println!("Not Implemented");
