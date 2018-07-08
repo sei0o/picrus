@@ -20,6 +20,7 @@ pub fn movwf(emu: &mut Emulator) {
 }
 
 pub fn nop(emu: &mut Emulator) {
+  emu.pc += 1;
 }
 
 //
