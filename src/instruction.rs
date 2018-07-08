@@ -4,6 +4,14 @@ use emulator::Emulator;
 // Byte-oriented file register operations
 //
 
+pub fn clrf(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let f = instr & 0x7f;
+  emu.file_reg[f as usize] = 0;
+  emu.set_z_bit(1);
+  emu.pc += 1;
+}
+
 pub fn nop(emu: &mut Emulator) {
 }
 

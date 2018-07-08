@@ -40,7 +40,8 @@ impl Emulator {
   pub fn do_next_instruction(&mut self) { 
     match self.program_mem[self.pc as usize] {
       // Byte-oriented file register operations
-      
+      op if (op >> 7) == 0b0000011 => instruction::clrf(self),
+
       // Bit-oriented file register operations
       op if (op >> 10) == 0b0100 => instruction::bcf(self),
       op if (op >> 10) == 0b0101 => instruction::bsf(self),
