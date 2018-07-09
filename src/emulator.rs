@@ -79,6 +79,7 @@ impl Emulator {
       op if (op >> 11) == 0b100 => instruction::call(self),
       op if (op >> 11) == 0b101 => instruction::goto(self),
       op if (op >> 10) == 0b1100 => instruction::movlw(self),
+      0b00_0000_0000_1000 => instruction::ret(self),
       
       _ => {
         println!("Not Implemented");

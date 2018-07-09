@@ -81,3 +81,8 @@ pub fn movlw(emu: &mut Emulator) {
   emu.w_reg = k;
   emu.pc += 1;
 }
+
+// Return from subroutine
+pub fn ret(emu: &mut Emulator) {
+  emu.pc = emu.stack.pop().expect("Found RETURN operation but the stack is empty");
+} 
