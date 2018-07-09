@@ -49,6 +49,17 @@ pub fn bsf(emu: &mut Emulator) {
 // Literal and control operations
 //
 
+// Call subroutine
+pub fn call(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  
+  emu.stack.push(emu.pc + 1);
+
+  // TODO: get upper bits from PCLATH
+  let pclath_addr = 0;
+  emu.pc = (pclath_addr << 11) | (instr & 0x7ff);
+}
+
 // Unconditional branch
 pub fn goto(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];

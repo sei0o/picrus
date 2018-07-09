@@ -8,6 +8,7 @@ pub struct Emulator {
   pub file_reg: Vec<u8>,
   pub w_reg: u8,
   pub pc: u16,
+  pub stack: Vec<u16>,
 }
 
 impl Emulator {
@@ -18,6 +19,7 @@ impl Emulator {
       file_reg: vec![0; 256],
       w_reg: 0,
       pc: 0,
+      stack: vec![0; 8],
     }
   }
 
@@ -74,6 +76,7 @@ impl Emulator {
       op if (op >> 10) == 0b0101 => instruction::bsf(self),
       
       // Literal and control operations
+      op if (op >> 11) == 0b100 => instruction::call(self),
       op if (op >> 11) == 0b101 => instruction::goto(self),
       op if (op >> 10) == 0b1100 => instruction::movlw(self),
       
