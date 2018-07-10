@@ -36,6 +36,22 @@ pub fn clrf(emu: &mut Emulator) {
   emu.pc += 1;
 }
 
+pub fn movf(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let f = (instr & 0x7f) as usize;
+  let d = (instr >> 7) & 1;
+  let fval = emu.get_file_reg(f);
+
+  emu.set_z_bit((fval == 0) as u8);
+  match d {
+    0 => emu.w_reg = fval,
+    1 => emu.set_file_reg(f, fval), // ? or do nothing
+    _ => panic!("Expected 0 or 1")
+  }
+
+  emu.pc += 1;
+}
+
 pub fn movwf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let f = instr & 0x7f;
