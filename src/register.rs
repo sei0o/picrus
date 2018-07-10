@@ -29,7 +29,7 @@ pub mod bank1 {
   pub const INTCON:     usize = 0x8b;
 }
 
-// Returns register address which has the same name in the other bank
+// Returns register address which is mapped in the other bank
 pub fn pair_for(reg: usize) -> Option<usize> {
   match reg {
     // bank 0 -> bank 1
@@ -44,6 +44,7 @@ pub fn pair_for(reg: usize) -> Option<usize> {
     0x09 => None,
     0x0a => Some(0x8a),
     0x0b => Some(0x8b),
+    0x0c...0x4f => Some(reg + 0x80),
     // bank 1 -> bank 0
     0x80 => Some(0x00),
     0x81 => None,
@@ -56,6 +57,8 @@ pub fn pair_for(reg: usize) -> Option<usize> {
     0x89 => None,
     0x8a => Some(0x0a),
     0x8b => Some(0x0b),
+    0x8c...0xcf => Some(reg - 0x80),
+    
     _ => panic!("Unknown register number")
   }
 }

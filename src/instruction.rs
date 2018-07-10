@@ -7,7 +7,7 @@ use emulator::Emulator;
 pub fn clrf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let f = instr & 0x7f;
-  emu.file_reg[f as usize] = 0;
+  emu.set_file_reg(f as usize, 0);
   emu.set_z_bit(1);
   emu.pc += 1;
 }
@@ -15,7 +15,9 @@ pub fn clrf(emu: &mut Emulator) {
 pub fn movwf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let f = instr & 0x7f;
-  emu.file_reg[f as usize] = emu.w_reg;
+  let w = emu.w_reg;
+  emu.set_file_reg(f as usize, w);
+
   emu.pc += 1;
 }
 
@@ -31,8 +33,9 @@ pub fn nop(emu: &mut Emulator) {
 pub fn bcf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let b = (instr >> 7) & 0x7;
-  let f = instr & 0x7f;
-  emu.file_reg[f as usize] &= 1 << b;
+  let f = (instr & 0x7f) as usize;
+  let val = emu.get_file_reg(f);
+  emu.set_file_reg(f, val & (1 << b));
   emu.pc += 1;
 }
 
@@ -40,8 +43,9 @@ pub fn bcf(emu: &mut Emulator) {
 pub fn bsf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let b = (instr >> 7) & 0x7;
-  let f = instr & 0x7f;
-  emu.file_reg[f as usize] &= 1 << b;
+  let f = (instr & 0x7f) as usize;
+  let val = emu.get_file_reg(f);
+  emu.set_file_reg(f, val & (1 << b));
   emu.pc += 1;
 }
 
