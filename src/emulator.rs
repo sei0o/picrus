@@ -42,7 +42,7 @@ impl Emulator {
     println!("INDF: {}", self.file_reg[0x00 as usize]);
     println!("TMR0: {}", self.file_reg[0x01 as usize]);
     println!("PCL: {}", self.file_reg[0x02 as usize]);
-    println!("STATUS: {}", self.file_reg[0x03 as usize]);
+    println!("STATUS: {}, Z: {}, DC: {}, C: {}", self.file_reg[0x03 as usize], self.get_z_bit(), self.get_dc_bit(), self.get_c_bit());
     println!("FSR: {}", self.file_reg[0x04 as usize]);
     println!("PORTA: {}", self.file_reg[0x05 as usize]);
     println!("PORTB: {}", self.file_reg[0x06 as usize]);
@@ -51,17 +51,11 @@ impl Emulator {
     println!("PCLATH: {}", self.file_reg[0x0a as usize]);
     println!("INTCON: {}", self.file_reg[0x0b as usize]);
 
-    println!("INDF: {}", self.file_reg[0x80 as usize]);
     println!("OPTION_REG: {}", self.file_reg[0x81 as usize]);
-    println!("PCL: {}", self.file_reg[0x82 as usize]);
-    println!("STATUS: {}", self.file_reg[0x83 as usize]);
-    println!("FSR: {}", self.file_reg[0x84 as usize]);
     println!("TRISA: {}", self.file_reg[0x85 as usize]);
     println!("TRISB: {}", self.file_reg[0x86 as usize]);
     println!("EECON1: {}", self.file_reg[0x88 as usize]);
     println!("EECON2: {}", self.file_reg[0x89 as usize]);
-    println!("PCLATH: {}", self.file_reg[0x8a as usize]);
-    println!("INTCON: {}", self.file_reg[0x8b as usize]);
   }
 
   pub fn do_next_instruction(&mut self) { 
@@ -107,6 +101,24 @@ impl Emulator {
 
   pub fn set_z_bit(&mut self, z: u8) {
     let old_status = self.get_file_reg(bank0::STATUS);
-    self.set_file_reg(bank0::STATUS, old_status & !(1 << 2) | (z << 2));
+    self.set_file_reg(bank0::STATUS, (old_status & !(1 << 2)) | (z << 2));
+  }
+
+  pub fn get_dc_bit(&self) -> u8 {
+    (self.get_file_reg(bank0::STATUS) >> 1) & 1
+  }
+
+  pub fn set_dc_bit(&mut self, dc: u8) {
+    let old_status = self.get_file_reg(bank0::STATUS);
+    self.set_file_reg(bank0::STATUS, (old_status & !(1 << 1)) | (dc << 1));
+  }
+
+  pub fn get_c_bit(&self) -> u8 {
+    (self.get_file_reg(bank0::STATUS)) & 1
+  }
+
+  pub fn set_c_bit(&mut self, c: u8) {
+    let old_status = self.get_file_reg(bank0::STATUS);
+    self.set_file_reg(bank0::STATUS, (old_status & !0) | c);
   }
 }
