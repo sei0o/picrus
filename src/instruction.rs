@@ -4,6 +4,22 @@ use emulator::Emulator;
 // Byte-oriented file register operations
 //
 
+// Add W and f
+pub fn addwf(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let f = (instr & 0x7f) as usize;
+  let d = (instr >> 7) & 1;
+  let fval = emu.get_file_reg(f);
+  let wval = emu.w_reg;
+  match d { 
+    0 => emu.w_reg += fval,
+    1 => emu.set_file_reg(f, wval + fval),
+    _ => panic!("Expected 0 or 1")
+  }
+  // TODO: change status C, DC, Z
+  emu.pc += 1;
+}
+
 pub fn clrf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let f = instr & 0x7f;
