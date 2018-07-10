@@ -1,4 +1,5 @@
 use emulator::Emulator;
+use register;
 
 //
 // Byte-oriented file register operations
@@ -124,6 +125,13 @@ pub fn movlw(emu: &mut Emulator) {
   let k: u8 = (instr & 0xff) as u8;
   emu.w_reg = k;
   emu.pc += 1;
+}
+
+// Return from interrupt
+pub fn retfie(emu: &mut Emulator) {
+  let old_intcon = emu.get_file_reg(bank0::INTCON);
+  emu.set_file_reg(bank0::INTCON, (old_intcon & !0x80) | 1);
+  emu.pc = emu.stack.pop().expect("Found RETFIE operation but the stack is empty");
 }
 
 // Return from subroutine
