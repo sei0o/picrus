@@ -11,12 +11,20 @@ pub fn addwf(emu: &mut Emulator) {
   let d = (instr >> 7) & 1;
   let fval = emu.get_file_reg(f);
   let wval = emu.w_reg;
+  let sum = (fval as u16) + (wval as u16);
+  emu.set_z_bit((sum == 0) as u8);
+  emu.set_c_bit((sum >= 0x100) as u8);
   match d { 
-    0 => emu.w_reg += fval,
-    1 => emu.set_file_reg(f, wval + fval),
+    0 => {
+      emu.w_reg += fval;
+      emu.set_dc_bit(((wval < 0x10) && (sum > 0x10)) as u8);
+    },
+    1 => {    
+      emu.set_file_reg(f, wval + fval);
+      emu.set_dc_bit(((fval < 0x10) && (sum > 0x10)) as u8); // ? compare with gpsim's put_Z_C_DC_OV_N()
+    },
     _ => panic!("Expected 0 or 1")
   }
-  // TODO: change status C, DC, Z
   emu.pc += 1;
 }
 
