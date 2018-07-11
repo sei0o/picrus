@@ -30,6 +30,24 @@ pub fn addwf(emu: &mut Emulator) {
   emu.pc += 1;
 }
 
+// AND W with f
+pub fn andwf(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let f = (instr & 0x7f) as usize;
+  let d = (instr >> 7) & 1;
+  let fval = emu.get_file_reg(f);
+  let wval = emu.w_reg;
+  
+  let result = fval & wval;
+  emu.set_z_bit((result == 0) as u8);
+  match d {
+    0 => emu.w_reg = result,
+    1 => emu.set_file_reg(f, result),
+    _ => panic!("Expected 0 or 1")
+  }
+  emu.pc += 1;
+}
+
 pub fn clrf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let f = instr & 0x7f;
