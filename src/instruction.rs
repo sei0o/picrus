@@ -115,6 +115,23 @@ pub fn decfsz(emu: &mut Emulator) {
   }
 }
 
+// Increment f
+pub fn incf(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let f = (instr & 0x7f) as usize;
+  let d = (instr >> 7) & 1;
+  let result = emu.get_file_reg(f).wrapping_add(1);
+
+  emu.set_z_bit((result == 0) as u8);
+  match d {
+    0 => emu.w_reg = result,
+    1 => emu.set_file_reg(f, result),
+    _ => panic!("Expected 0 or 1")
+  }
+
+  emu.pc += 1;
+}
+
 pub fn movf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let f = (instr & 0x7f) as usize;
