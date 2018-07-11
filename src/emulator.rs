@@ -70,6 +70,7 @@ impl Emulator {
       op if (op >> 8) == 0b001011 => instruction::decfsz(self),
       op if (op >> 8) == 0b001010 => instruction::incf(self),
       op if (op >> 8) == 0b001111 => instruction::incfsz(self),
+      op if (op >> 8) == 0b000100 => instruction::iorwf(self),
       op if (op >> 8) == 0b001000 => instruction::movf(self),
       op if (op >> 7) == 0b0000001 => instruction::movwf(self),
       op if (op >> 7) == 0b0000000 && (op & 0b11111) == 0 => instruction::nop(self),
