@@ -56,6 +56,13 @@ pub fn clrf(emu: &mut Emulator) {
   emu.pc += 1;
 }
 
+// Clear W
+pub fn clrw(emu: &mut Emulator) {
+  emu.w_reg = 0;
+  emu.set_z_bit(1);
+  emu.pc += 1;
+}
+
 pub fn movf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let f = (instr & 0x7f) as usize;
