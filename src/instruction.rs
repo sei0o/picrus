@@ -252,6 +252,16 @@ pub fn goto(emu: &mut Emulator) {
   emu.pc = (pclath_addr << 11) | (instr & 0x7ff);
 }
 
+// Inclusive OR literal with W
+pub fn iorlw(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let k: u8 = (instr & 0xff) as u8;
+  let result = emu.w_reg | k;
+  emu.w_reg = result;
+  emu.set_z_bit((result == 0) as u8);
+  emu.pc += 1;
+}
+
 pub fn movlw(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let k: u8 = (instr & 0xff) as u8;

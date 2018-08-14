@@ -82,6 +82,7 @@ impl Emulator {
       // Literal and control operations
       op if (op >> 11) == 0b100 => instruction::call(self),
       op if (op >> 11) == 0b101 => instruction::goto(self),
+      op if (op >> 8) == 0b111000 => instruction::iorlw(self),
       op if (op >> 10) == 0b1100 => instruction::movlw(self),
       0b00_0000_0000_1001 => instruction::retfie(self),
       op if (op >> 10) == 0b1101 => instruction::retlw(self),
