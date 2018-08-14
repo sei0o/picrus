@@ -287,6 +287,20 @@ pub fn btfsc(emu: &mut Emulator) {
   }
 }
 
+// Bit Test f, Skip if Set
+pub fn btfss(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let b = (instr >> 7) & 0x7;
+  let f = (instr & 0x7f) as usize;
+  let fval = emu.get_file_reg(f);
+
+  emu.pc += match (fval >> b) & 1 {
+    0 => 1,
+    1 => 2,
+    _ => panic!("Expected 0 or 1")
+  }
+}
+
 //
 // Literal and control operations
 //
