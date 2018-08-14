@@ -313,6 +313,19 @@ pub fn ret(emu: &mut Emulator) {
   emu.pc = emu.stack.pop().expect("Found RETURN operation but the stack is empty");
 } 
 
+// Subtract W from literal
+pub fn sublw(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let k = (instr & 0xff) as u8;
+  let old = emu.w_reg;
+  emu.w_reg = emu.w_reg.wrapping_sub(k);
+  let wval = emu.w_reg;
+  emu.set_z_bit((wval == 0) as u8);
+  emu.set_c_bit((wval >= 0x100) as u8);
+  emu.set_dc_bit((old < 0x10 && wval >= 0x10) as u8);
+  emu.pc += 1;
+}
+
 // Exclusive OR literal with W
 pub fn xorlw(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];

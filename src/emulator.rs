@@ -89,6 +89,7 @@ impl Emulator {
       0b00_0000_0000_1001 => instruction::retfie(self),
       op if (op >> 10) == 0b1101 => instruction::retlw(self),
       0b00_0000_0000_1000 => instruction::ret(self),
+      op if (op >> 9) == 0b11110 => instruction::sublw(self),
       op if (op >> 8) == 0b111010 => instruction::xorlw(self),
       
       _ => {
