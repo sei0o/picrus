@@ -74,6 +74,7 @@ impl Emulator {
       op if (op >> 8) == 0b001000 => instruction::movf(self),
       op if (op >> 7) == 0b0000001 => instruction::movwf(self),
       op if (op >> 7) == 0b0000000 && (op & 0b11111) == 0 => instruction::nop(self),
+      op if (op >> 8) == 0b001101 => instruction::rlf(self),
       op if (op >> 8) == 0b000010 => instruction::subwf(self),
       op if (op >> 8) == 0b001110 => instruction::swapf(self),
       op if (op >> 8) == 0b000110 => instruction::xorwf(self),
@@ -140,6 +141,6 @@ impl Emulator {
 
   pub fn set_c_bit(&mut self, c: u8) {
     let old_status = self.get_file_reg(bank0::STATUS);
-    self.set_file_reg(bank0::STATUS, (old_status & !0) | c);
+    self.set_file_reg(bank0::STATUS, (old_status & !1) | c);
   }
 }
