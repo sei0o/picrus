@@ -312,3 +312,13 @@ pub fn retlw(emu: &mut Emulator) {
 pub fn ret(emu: &mut Emulator) {
   emu.pc = emu.stack.pop().expect("Found RETURN operation but the stack is empty");
 } 
+
+// Exclusive OR literal with W
+pub fn xorlw(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let k = (instr & 0xff) as u8;
+  emu.w_reg ^= k;
+  let wval = emu.w_reg;
+  emu.set_z_bit((wval == 0) as u8);
+  emu.pc += 1;
+}
