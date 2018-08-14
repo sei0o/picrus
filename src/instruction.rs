@@ -240,6 +240,16 @@ pub fn addlw(emu: &mut Emulator) {
   emu.pc += 1;
 }
 
+// AND literal with W
+pub fn andlw(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let k = (instr & 0xff) as u8;
+  emu.w_reg &= k;
+  let wval = emu.w_reg;
+  emu.set_z_bit((wval == 0) as u8);
+  emu.pc += 1;
+}
+
 // Call subroutine
 pub fn call(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
