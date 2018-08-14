@@ -74,6 +74,7 @@ impl Emulator {
       op if (op >> 8) == 0b001000 => instruction::movf(self),
       op if (op >> 7) == 0b0000001 => instruction::movwf(self),
       op if (op >> 7) == 0b0000000 && (op & 0b11111) == 0 => instruction::nop(self),
+      op if (op >> 8) == 0b000110 => instruction::xorwf(self),
 
       // Bit-oriented file register operations
       op if (op >> 10) == 0b0100 => instruction::bcf(self),
