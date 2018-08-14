@@ -198,11 +198,30 @@ pub fn nop(emu: &mut Emulator) {
   emu.pc += 1;
 }
 
+pub fn subwf(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let f = (instr & 0x7f) as usize;
+  let d = ((instr >> 7) & 1) as u8;
+  let wval = emu.w_reg;
+  let result = emu.get_file_reg(f).wrapping_sub(wval);
+
+  emu.set_z_bit((result == 0) as u8);
+  emu.set_dc_bit((wval < 0x10 && result >= 0x10) as u8);
+  emu.set_c_bit((result >= 0x100) as u8);
+  match d {
+    0 => emu.w_reg = result,
+    1 => emu.set_file_reg(f, result),
+    _ => panic!("Expected 0 or 1"),
+  }
+
+  emu.pc += 1;
+}
+
 pub fn xorwf(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];
   let f = (instr & 0x7f) as usize;
   let d = ((instr >> 7) & 1) as u8;
-  let result = emu.get_file_reg(f) ^ d;
+  let result = emu.get_file_reg(f) ^ emu.w_reg;
 
   emu.set_z_bit((result == 0) as u8);
   match d {
