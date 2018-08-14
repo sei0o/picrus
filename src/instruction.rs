@@ -226,6 +226,20 @@ pub fn bsf(emu: &mut Emulator) {
 // Literal and control operations
 //
 
+// Add literal and W
+pub fn addlw(emu: &mut Emulator) {
+  let instr = emu.program_mem[emu.pc as usize];
+  let k = (instr & 0xff) as u8;
+  let old = emu.w_reg;
+  let result = (emu.w_reg as u16) + (k as u16);
+  emu.w_reg = (result & 0xff) as u8;
+
+  emu.set_z_bit((result == 0) as u8);
+  emu.set_dc_bit((old < 0x10 && result >= 0x10) as u8);
+  emu.set_c_bit((result >= 0x100) as u8);
+  emu.pc += 1;
+}
+
 // Call subroutine
 pub fn call(emu: &mut Emulator) {
   let instr = emu.program_mem[emu.pc as usize];

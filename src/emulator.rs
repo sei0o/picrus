@@ -80,6 +80,7 @@ impl Emulator {
       op if (op >> 10) == 0b0101 => instruction::bsf(self),
       
       // Literal and control operations
+      op if (op >> 9) == 0b11111 => instruction::addlw(self),
       op if (op >> 11) == 0b100 => instruction::call(self),
       op if (op >> 11) == 0b101 => instruction::goto(self),
       op if (op >> 8) == 0b111000 => instruction::iorlw(self),
