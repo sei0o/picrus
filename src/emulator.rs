@@ -1,6 +1,6 @@
 use instruction;
 use register;
-use register::{bank0, bank1};
+use register::{bank0, bank1, named_bits};
 
 pub struct Emulator {
   pub program_mem: Vec<u16>,
@@ -9,6 +9,7 @@ pub struct Emulator {
   pub w_reg: u8,
   pub pc: u16,
   pub stack: Vec<u16>,
+    
 }
 
 impl Emulator {
@@ -59,6 +60,7 @@ impl Emulator {
   }
 
   pub fn do_next_instruction(&mut self) { 
+    println!("{:b}", self.program_mem[self.pc as usize]);
     match self.program_mem[self.pc as usize] {
       // Byte-oriented file register operations
       op if (op >> 8) == 0b000111 => instruction::addwf(self),
@@ -119,29 +121,35 @@ impl Emulator {
   }
 
   pub fn get_z_bit(&self) -> u8 {
-    (self.get_file_reg(bank0::STATUS) >> 2) & 1
+    self.get_bit(bank0::STATUS, named_bits::Z)
   }
 
   pub fn set_z_bit(&mut self, z: u8) {
-    let old_status = self.get_file_reg(bank0::STATUS);
-    self.set_file_reg(bank0::STATUS, (old_status & !(1 << 2)) | (z << 2));
+    self.set_bit(bank0::STATUS, named_bits::Z, z);
   }
 
   pub fn get_dc_bit(&self) -> u8 {
-    (self.get_file_reg(bank0::STATUS) >> 1) & 1
+    self.get_bit(bank0::STATUS, named_bits::DC)
   }
 
   pub fn set_dc_bit(&mut self, dc: u8) {
-    let old_status = self.get_file_reg(bank0::STATUS);
-    self.set_file_reg(bank0::STATUS, (old_status & !(1 << 1)) | (dc << 1));
+    self.set_bit(bank0::STATUS, named_bits::DC, dc);
   }
 
   pub fn get_c_bit(&self) -> u8 {
-    (self.get_file_reg(bank0::STATUS)) & 1
+    self.get_bit(bank0::STATUS, named_bits::C)
   }
 
   pub fn set_c_bit(&mut self, c: u8) {
-    let old_status = self.get_file_reg(bank0::STATUS);
-    self.set_file_reg(bank0::STATUS, (old_status & !1) | c);
+    self.set_bit(bank0::STATUS, named_bits::C, c);
+  }
+
+  pub fn get_bit(&self, reg: usize, b: usize) -> u8 {
+    (self.get_file_reg(reg) >> b) & 1
+  }
+
+  pub fn set_bit(&mut self, reg: usize, b: usize, val: u8) {
+    let old = self.get_file_reg(reg);
+    self.set_file_reg(reg, (old & !(1 << b)) | (val << b));
   }
 }

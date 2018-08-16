@@ -91,3 +91,26 @@ pub fn name_for(reg: usize) -> String {
     _ => panic!("Unknown register number")
   }.to_string()
 }
+
+// Named bits in SFR
+pub mod named_bits {
+  // STATUS
+  pub const C: usize = 0;
+  pub const DC: usize = 1;
+  pub const Z: usize = 2;
+  pub const PD: usize = 3;
+  pub const TO: usize = 4;
+  pub const RP0: usize = 5;
+  pub const RP1: usize = 6;
+  pub const IRP: usize = 7;
+
+  // OPTION_REG
+  pub const PS0: usize = 0;
+  pub const PS1: usize = 1;
+  pub const PS2: usize = 2;
+  pub const PSA: usize = 3;
+  pub const T0SE: usize = 4;
+  pub const T0CS: usize = 5;
+  pub const INTEDG: usize = 6;
+  pub const RBPU: usize = 7;
+}
